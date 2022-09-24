@@ -72,8 +72,11 @@
         state: absent
 
 - name: Set permissions for zigbee2mqtt
+  loop:
+    - "{{ zigbee_dir }}/dist"
+    - "{{ zigbee_data_dir }}"
   ansible.builtin.file:
-    path: "{{ zigbee_dir }}/dist"
+    path: "{{ item }}"
     state: directory
     recurse: true
     owner: "{{ zigbee_user }}"
