@@ -100,6 +100,16 @@
     owner: "{{ zigbee_user }}"
     mode: 0600
 
+- name: Ensure necessary config files exists
+  loop:
+    - devices.yaml
+    - groups.yaml
+  ansible.builtin.file:
+    path: "{{ zigbee_dir }}/data/{{ item }}"
+    state: touch
+    owner: "{{ zigbee_user }}"
+    mode: 0600
+
 - name: Install systemd service template
   notify:
     - Reload zigbee2mqtt daemon config
