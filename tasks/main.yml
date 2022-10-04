@@ -119,3 +119,9 @@
     dest: /etc/systemd/system/zigbee2mqtt.service
     owner: "{{ zigbee_user }}"
     mode: 0644
+
+- name: Install backup script template
+  ansible.builtin.template:
+    src: zigbee2mqtt-backup.j2
+    dest: /usr/local/bin/zigbee2mqtt-backup
+    mode: 0755
