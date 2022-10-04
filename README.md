@@ -5,6 +5,8 @@
 This role allows installing and configuring [zigbee2mqtt](https://www.zigbee2mqtt.io/) on Raspberry Pi
 running stock Raspbian lite or full. Should also work on other Debian distributions.
 
+It provides a script `/usr/local/bin/zigbee2mqtt-backup` to back up and restore the configuration and device database.  
+
 The role is based on [igami.zigbee2mqtt](https://github.com/Igami/ansible-role-zigbee2mqtt)
 
 ## Requirements
