@@ -37,7 +37,7 @@ esac
 
 BACKUP_FILE="$2"
 
-if [ "$HELP" = "YES" ]; then
+if [ "${HELP}" = "YES" ]; then
     cat >&2 <<EOF
 #######                                #####  #     #  #####  ####### #######    ######
      #  #  ####  #####  ###### ###### #     # ##   ## #     #    #       #       #     #   ##    ####  #    # #    # #####
@@ -72,13 +72,23 @@ if [ ! -x "$(command -v systemctl)" ]; then
     exit 1
 fi
 
-if [ "$CMD_NAME" = "create" ]; then
+if [ "${BACKUP_FILE}" = "" ]; then
+    echo >&2 'Error: backup file name is missing.'
+    exit 1
+fi
+
+if [ "${CMD_NAME}" = "create" ]; then
     echo "================================================================================"
     printf "\033[34mCreating Zigbee2MQTT backup\033[0m\n\n"
 
     tar -czvf "${BACKUP_FILE}" -C `dirname "${ZIGBEE2MQTT_DATA_DIR}"` `basename "${ZIGBEE2MQTT_DATA_DIR}"`
 
-elif [ "$CMD_NAME" = "restore" ]; then
+elif [ "${CMD_NAME}" = "restore" ]; then
+    if [ ! -f "${BACKUP_FILE}" ]; then
+        echo >&2 'Error: backup file '${BACKUP_FILE}' does not exist.'
+        exit 1
+    fi
+
     echo "================================================================================"
     printf "\033[34mStopping Zigbee2MQTT service\033[0m\n\n"
     systemctl stop zigbee2mqtt.service
