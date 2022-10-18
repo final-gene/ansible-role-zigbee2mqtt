@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   role_name: zigbee2mqtt
+  namespace: finalgene
   author: Frank Giesecke
   description: zigbee2mqtt on Raspbian
   company: final gene
