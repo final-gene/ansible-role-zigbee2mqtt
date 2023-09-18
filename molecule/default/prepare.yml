@@ -26,6 +26,20 @@
             repo: deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main
             state: present
 
+    - name: Add docker systemctl replacement
+      block:
+        - name: Ensure python is installed
+          ansible.builtin.apt:
+            update_cache: true
+            name:
+              - python
+
+        - name: Ensure docker systemctl replacement is installed
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py
+            dest: /usr/local/bin/systemctl
+            mode: "0755"
+
     - name: Install zigbee2mqtt dependencies
       ansible.builtin.package:
         update_cache: true
