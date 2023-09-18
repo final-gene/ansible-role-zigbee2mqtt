@@ -2,12 +2,33 @@
 - name: Prepare
   hosts: all
   tasks:
-    - name: Ensure apt cache is up to date
-      ansible.builtin.apt:
-        update_cache: true
+    - name: Add nodejs repository
+      block:
+        - name: Ensure gpg binary is installed
+          ansible.builtin.apt:
+            update_cache: true
+            name:
+              - gnupg
+
+        - name: Ensure keyring path exists
+          ansible.builtin.file:
+            path: /etc/apt/keyrings
+            state: directory
+            mode: "0755"
+
+        - name: Fetch nodesource gpg key
+          ansible.builtin.apt_key:
+            url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+            keyring: /etc/apt/keyrings/nodesource.gpg
+
+        - name: Add nodejs repository into sources list
+          ansible.builtin.apt_repository:
+            repo: deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main
+            state: present
 
     - name: Install zigbee2mqtt dependencies
       ansible.builtin.package:
+        update_cache: true
         name:
           - git
-          - npm
+          - nodejs
