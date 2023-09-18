@@ -32,6 +32,13 @@
         path: "{{ zigbee_data_dir }}"
         dest: "{{ _backup_file.path }}"
 
+- name: Patch /root/.gitconfig
+  # This invocation (without --add, with the dir name twice) is idempotent
+  changed_when: false
+  # noqa command-instead-of-module
+  ansible.builtin.command:
+    cmd: git config --global safe.directory {{ zigbee_dir }} {{ zigbee_dir }}
+
 - name: Clone zigbee2mqtt repository
   register: _repo
   notify: Restart zigbee2mqtt
