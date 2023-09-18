@@ -32,6 +32,13 @@
         path: "{{ zigbee_data_dir }}"
         dest: "{{ _backup_file.path }}"
 
+- name: Patch /root/.gitconfig
+  # This invocation (without --add, with the dir name twice) is idempotent
+  changed_when: false
+  # noqa command-instead-of-module
+  ansible.builtin.command:
+    cmd: git config --global safe.directory {{ zigbee_dir }} {{ zigbee_dir }}
+
 - name: Clone zigbee2mqtt repository
   register: _repo
   notify: Restart zigbee2mqtt
@@ -91,6 +98,11 @@
     group: "{{ zigbee_user }}"
     mode: 0600
     force: "{{ zigbee_generate_new_network_key }}"
+
+- name: Manage external converters
+  when: zigbee_external_converters is defined
+  loop: "{{ zigbee_external_converters }}"
+  ansible.builtin.include_tasks: external_converter.yml
 
 - name: Install configuration template
   notify: Restart zigbee2mqtt
