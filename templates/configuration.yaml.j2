@@ -14,8 +14,8 @@ blocklist: {{ zigbee_blocklist }}
 {% if zigbee_passlist is defined %}
 passlist: {{ zigbee_passlist }}
 {% endif %}
-{% if zigbee_external_converters is defined %}
-external_converters: {{ zigbee_external_converters }}
+{% if _zigbee_external_converters is defined %}
+external_converters: {{ _zigbee_external_converters }}
 {% endif %}
 {% if zigbee_map_options is defined %}
 map_options: {{ zigbee_map_options }}
