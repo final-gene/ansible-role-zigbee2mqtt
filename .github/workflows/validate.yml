@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Ansible CLI
         uses: tomasnorre/ansible-cli-client@v0.0.7
@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: finalgene.zigbee2mqtt
 
