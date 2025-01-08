@@ -1,6 +1,6 @@
 ---
 name: Validate and test role
-on:
+"on":
   push:
     branches:
       - main
