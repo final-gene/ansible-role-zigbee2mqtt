@@ -10,27 +10,28 @@
     path: "{{ zigbee_dir }}"
     state: directory
     owner: "{{ zigbee_user }}"
-    mode: 0700
+    mode: "0700"
 
-- name: check for existing data directory
+- name: Check for existing data directory
   register: _data_dir
   ansible.builtin.stat:
     path: "{{ zigbee_data_dir }}"
     get_checksum: false
 
-- name: backup data directory
+- name: Backup data directory
   when: _data_dir.stat.exists
   block:
-    - name: create temporary file
+    - name: Create temporary file
       register: _backup_file
       ansible.builtin.tempfile:
         path: '~'
 
-    - name: create backup
+    - name: Create backup
       register: _backup
       community.general.archive:
         path: "{{ zigbee_data_dir }}"
         dest: "{{ _backup_file.path }}"
+        mode: "0600"
 
 - name: Patch /root/.gitconfig
   # This invocation (without --add, with the dir name twice) is idempotent
@@ -59,12 +60,12 @@
     ci: true
     no_optional: true
 
-- name: restore backup of data directory
+- name: Restore backup of data directory
   when:
     - _data_dir.stat.exists
     - _backup_file is succeeded
   block:
-    - name: restore backup
+    - name: Restore backup
       when: _backup is succeeded
       ansible.builtin.unarchive:
         src: "{{ _backup_file.path }}"
@@ -73,7 +74,7 @@
         extra_opts:
           - --strip-components=1
 
-    - name: remove backup
+    - name: Remove backup
       ansible.builtin.file:
         path: "{{ _backup_file.path }}"
         state: absent
@@ -96,7 +97,7 @@
     dest: "{{ zigbee_dir }}/data/network_key.yaml"
     owner: "{{ zigbee_user }}"
     group: "{{ zigbee_user }}"
-    mode: 0600
+    mode: "0600"
     force: "{{ zigbee_generate_new_network_key }}"
 
 - name: Manage external converters
@@ -110,7 +111,7 @@
     src: configuration.yaml.j2
     dest: "{{ zigbee_dir }}/data/configuration.yaml"
     owner: "{{ zigbee_user }}"
-    mode: 0600
+    mode: "0600"
 
 - name: Ensure necessary config files exists
   loop:
@@ -120,7 +121,7 @@
     path: "{{ zigbee_dir }}/data/{{ item }}"
     state: touch
     owner: "{{ zigbee_user }}"
-    mode: 0600
+    mode: "0600"
 
 - name: Install systemd service template
   notify:
@@ -130,10 +131,10 @@
     src: zigbee2mqtt.service.j2
     dest: /etc/systemd/system/zigbee2mqtt.service
     owner: "{{ zigbee_user }}"
-    mode: 0644
+    mode: "0644"
 
 - name: Install backup script template
   ansible.builtin.template:
     src: zigbee2mqtt-backup.j2
     dest: /usr/local/bin/zigbee2mqtt-backup
-    mode: 0755
+    mode: "0755"
