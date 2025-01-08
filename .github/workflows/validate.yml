@@ -35,7 +35,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - distro: debian10
           - distro: debian11
       fail-fast: false
 
