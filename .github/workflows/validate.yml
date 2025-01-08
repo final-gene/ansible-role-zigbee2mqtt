@@ -1,6 +1,6 @@
 ---
 name: Validate and test role
-on:
+"on":
   push:
     branches:
       - main
@@ -22,7 +22,7 @@ jobs:
           command: ansible-galaxy collection install community.general
 
       - name: Run ansible-lint
-        uses: ansible-community/ansible-lint-action@v6.11.0
+        uses: ansible-community/ansible-lint-action@v6.17.0
 
   molecule:
     name: Run Molecule Tests
@@ -35,7 +35,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - distro: debian10
           - distro: debian11
       fail-fast: false
 
