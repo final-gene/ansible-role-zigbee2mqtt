@@ -52,13 +52,23 @@
     force: true
     version: "{{ zigbee_version }}"
 
-- name: Install zigbee2mqtt via npm
+- name: Install zigbee2mqtt
   when: _repo is changed # noqa: no-handler
-  notify: Restart zigbee2mqtt
-  community.general.npm:
-    path: "{{ zigbee_dir }}"
-    ci: true
-    no_optional: true
+  block:
+    - name: Run npm install
+      notify: Restart zigbee2mqtt
+      community.general.npm:
+        path: "{{ zigbee_dir }}"
+        ci: true
+        no_optional: true
+
+    - name: Run npm build
+      notify: Restart zigbee2mqtt
+      register: _build_result
+      changed_when: _build_result.rc == 0
+      ansible.builtin.command:
+        chdir: "{{ zigbee_dir }}"
+        cmd: npm run build
 
 - name: Restore backup of data directory
   when:
