@@ -9,6 +9,9 @@ It provides a script `/usr/local/bin/zigbee2mqtt-backup` to back up and restore 
 
 The role is based on [igami.zigbee2mqtt](https://github.com/Igami/ansible-role-zigbee2mqtt)
 
+> [!IMPORTANT]  
+> Installation of Zigbee2MQTT in version 2.x or higher requires version 4.x of higher of this role.
+
 ## Requirements
 
 Raspberry Pi with SSH enabled and CC2531 USB sniffer.  
@@ -90,7 +93,6 @@ Details of all settings can be found in the [configuration guide for OTA device 
 
 | Variable                        | Type     | Default | Comments                                                         |
 |---------------------------------|----------|---------|------------------------------------------------------------------|
-| ikea_ota_use_test_url           | boolean  | `false` | Use IKEA TRADFRI OTA test server, see OTA updates documentation. |
 | update_check_interval           | integer  | `1440`  | Minimum time between OTA update checks.                          |
 | disable_automatic_update_check  | boolean  | `false` | Disable automatic update checks.                                 |
 

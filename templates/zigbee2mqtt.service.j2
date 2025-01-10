@@ -3,7 +3,8 @@ Description=zigbee2mqtt
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/npm start
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node index.js
 WorkingDirectory={{ zigbee_dir }}
 StandardOutput=inherit
 StandardError=inherit

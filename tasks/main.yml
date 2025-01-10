@@ -12,6 +12,11 @@
     owner: "{{ zigbee_user }}"
     mode: "0700"
 
+- name: Ensure pnpm is installed
+  community.general.npm:
+    name: pnpm
+    global: true
+
 - name: Check for existing data directory
   register: _data_dir
   ansible.builtin.stat:
@@ -55,20 +60,21 @@
 - name: Install zigbee2mqtt
   when: _repo is changed # noqa: no-handler
   block:
-    - name: Run npm install
+    - name: Run install
       notify: Restart zigbee2mqtt
-      community.general.npm:
-        path: "{{ zigbee_dir }}"
-        ci: true
-        no_optional: true
+      register: _install_result
+      changed_when: _install_result.rc == 0
+      ansible.builtin.command:
+        chdir: "{{ zigbee_dir }}"
+        cmd: pnpm install --frozen-lockfile
 
-    - name: Run npm build
+    - name: Run build
       notify: Restart zigbee2mqtt
       register: _build_result
       changed_when: _build_result.rc == 0
       ansible.builtin.command:
         chdir: "{{ zigbee_dir }}"
-        cmd: npm run build
+        cmd: pnpm run build
 
 - name: Restore backup of data directory
   when:
