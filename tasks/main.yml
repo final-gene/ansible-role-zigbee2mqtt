@@ -66,7 +66,7 @@
       changed_when: _install_result.rc == 0
       ansible.builtin.command:
         chdir: "{{ zigbee_dir }}"
-        cmd: pnpm install --frozen-lockfile
+        cmd: pnpm --ignore-workspace install --frozen-lockfile
 
     - name: Run build
       notify: Restart zigbee2mqtt
@@ -74,7 +74,7 @@
       changed_when: _build_result.rc == 0
       ansible.builtin.command:
         chdir: "{{ zigbee_dir }}"
-        cmd: pnpm run build
+        cmd: pnpm --ignore-workspace run build
 
 - name: Restore backup of data directory
   when:
