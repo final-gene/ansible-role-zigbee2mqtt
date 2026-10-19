@@ -23,8 +23,8 @@ jobs:
           args: ""
           setup_python: "true"
           python_version: "3.14"
-          working_directory: ""
-          requirements_file: ""
+          working_directory: "./"
+          requirements_file: "./requirements.yml"
 
   molecule:
     name: Run Molecule Tests
