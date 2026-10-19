@@ -16,15 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Ansible CLI
-        uses: tomasnorre/ansible-cli-client@v0.0.7
-        with:
-          command: ansible-galaxy collection install community.general
-
       - name: Run ansible-lint
         uses: ansible-actions/ansible-lint-action@v1.0.3
         with:
           target: "./"
+          required_collections: 'community.general'
 
   molecule:
     name: Run Molecule Tests
