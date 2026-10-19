@@ -16,15 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Ansible CLI
-        uses: tomasnorre/ansible-cli-client@v0.0.7
-        with:
-          command: ansible-galaxy collection install community.general
-
       - name: Run ansible-lint
-        uses: ansible-actions/ansible-lint-action@v1.0.3
+        uses: ansible/ansible-lint@main
+        # optional (see below):
         with:
-          target: "./"
+          args: ""
+          setup_python: "true"
+          python_version: "3.14"
+          working_directory: "./"
+          requirements_file: "./requirements.yml"
 
   molecule:
     name: Run Molecule Tests
