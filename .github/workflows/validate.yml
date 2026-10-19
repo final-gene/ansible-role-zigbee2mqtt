@@ -17,10 +17,14 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Run ansible-lint
-        uses: ansible-actions/ansible-lint-action@v1.0.3
+        uses: ansible/ansible-lint@main
+        # optional (see below):
         with:
-          target: "./"
-          required_collections: 'community.general'
+          args: ""
+          setup_python: "true"
+          python_version: "3.14"
+          working_directory: ""
+          requirements_file: ""
 
   molecule:
     name: Run Molecule Tests
